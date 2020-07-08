@@ -5,18 +5,32 @@ The easiest way to get the Panache Legal Platform up and running is to use `Dock
 
 All Panache Legal Platform containers are distributed via the Panache Software `Docker Hub <https://hub.docker.com/u/panachesoftware>`_, here you can find docker containers for all the components of the Panache Legal platform distributed as Linux containers (that can be run on Windows, Mac or Linux) as well as Linux ARM32 containers suitable for running on ARM platforms like the `Raspberry Pi <https://www.raspberrypi.org/>`_.
 
+
 0 to LegalTech in 3 minutes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once you have Docker installed on your system and have a database available it's possible to get Panache Legal up and running in as little as 3 minutes, just watch `this video <https://youtu.be/pwvgs_HV6Lg>`_ to see an example of getting Panache Legal up and running on a Raspberry Pi.
 
-The following steps are provided to get you up and running within a Windows 10 environment.  The principal will be the same in other enviornemnts (like Mac and Linux) so you should be able to adapt these instructions.
+This guide provides you with details to get you up and running with Panache Legal in a Windows 10 environment.  The principal will be the same in other enviornemnts (like Mac and Linux) so you should be able to adapt these instructions by making adjustments to the docker compose file.
 
 .. note::   Panache Legal is currently in early alpha development and is not suitable for production environments, it should only be used for early testing.  
 
             Panache Legal containers currently include a development build of the software and do not support features like HTTPS to prevent complications with certificates.
 
             The current build of Panache Legal supports SQL Server.
+
+TL;DR
+^^^^^
+
+What follows is a step by step guide to running Panache Legal but the TL;DR is.
+
+1. Install `Docker Desktop <https://www.docker.com/products/docker-desktop>`_
+
+2. Download the example `docker-compose.yml <https://github.com/PanacheSoftware/PanacheLegalPlatform/blob/main/support%20files/docker/docker-compose.yml>`_ file
+
+3. Run the following command::
+
+    docker-compose up -d
 
 Install Docker
 ^^^^^^^^^^^^^^
