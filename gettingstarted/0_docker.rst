@@ -35,7 +35,7 @@ What follows is a step by step guide to running Panache Legal but the TL;DR is.
 Install Docker
 ^^^^^^^^^^^^^^
 
-For Windows you will need to install the `Docker Desktop <https://www.docker.com/products/docker-desktop>`_ application.  Under Windows Docker requires that Hyper-V is installed (Available in Windows 10 Pro).
+For Windows you will need to install the `Docker Desktop <Docker Desktop_>`_ application.  Under Windows Docker requires that Hyper-V is installed (Available in Windows 10 Pro).
 
 You can enable Hyper-V via Windows 'Apps and Features'.
 
@@ -61,7 +61,7 @@ Download Docker compose file
 
 You can download an example docker compose file via the following link.
 
-GitHub: `docker-compose.yml <https://github.com/PanacheSoftware/PanacheLegalPlatform/blob/main/support%20files/docker/docker-compose.yml>`_
+GitHub: `docker-compose.yml <docker-compose.yml_>`_
 
 **Steps to run:**
 
@@ -89,7 +89,7 @@ If this happens simply click on the **Start** button next to any containers that
 .. image:: /img/docker-dashboard.png
    :align: center
 
-Once all containers are running open a web browser and navigate to **http://host.docker.internal:55001** to open the Panache Legal Platform.  You can use the following details to login (assuming you did not change the **PanacheSoftware__StartDomain** environment variable to a different domain.
+Once all containers are running open a web browser and navigate to **http://host.docker.internal:55001** to open the Panache Legal Platform.  You can use the following details to login (assuming you did not change the **PanacheSoftware__StartDomain** environment variable to a different domain).
 
 Username: admin@panachesoftware.com
 
