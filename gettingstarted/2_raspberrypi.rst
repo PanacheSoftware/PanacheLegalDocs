@@ -1,6 +1,9 @@
 Running Panache Legal on a Raspberry Pi
 =======================================
 
+.. image:: /img/raspi-logo.png
+   :align: center
+
 One of the core design considerations for the Panache Legal Platform is to build a LegalTech solution that can be used by an individual lawyer, right through to an enterprise, on any environment they may want to use.  Panache Legal is built using `Microsoft .NET Core <https://dotnet.microsoft.com/>`_ which provides cross platform functionality allowing Panache Legal to run on Windows, Mac and Linux (including ARM based variants).  
 
 Although it is unlikely that you would run a production environment on a `Raspberry Pi <https://www.raspberrypi.org/>`_ it is possible to get Panache Legal running on one which means that if you had no available system to test on, you could get up and running with the complete platform for just the cost of a single Raspberry Pi, around £55.
