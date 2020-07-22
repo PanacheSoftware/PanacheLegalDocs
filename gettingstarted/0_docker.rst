@@ -54,7 +54,7 @@ The Panache Legal Platform requires either a Microsoft SQL Server or MySQL datab
 
 Usage of Microsoft SQL Server requires a licence and so your use case will be specific to you and/or your organisation.
 
-In this example we will use a MySQL Linux `docker container <https://hub.docker.com/_/mysql>`_.  You could alternatively use a `Microsoft SQL Server <https://hub.docker.com/_/microsoft-mssql-server>`_ Linux container with the free developer, although this licence includes some limitations on how it can be deployed and you should make sure to read the licence details on the docker hub page, as well as checking which `edition <https://www.microsoft.com/en-us/sql-server/sql-server-2017-editions>`_ will be suitable for your use case.
+In this example we will use a MySQL Linux `docker container <https://hub.docker.com/_/mysql>`_.  You could alternatively use a `Microsoft SQL Server <https://hub.docker.com/_/microsoft-mssql-server>`_ Linux container with the free developer licence. This licence includes some limitations on how it can be deployed and you should make sure to read the licence details on the docker hub page, as well as checking which `edition <https://www.microsoft.com/en-us/sql-server/sql-server-2017-editions>`_ will be suitable for your use case.
 
 If you are not using the docker container version of MySQL or Microsoft SQL Server as per this guide and instead will connect to your own database installation you will need to ensure you have a valid connection string to access your database.
 

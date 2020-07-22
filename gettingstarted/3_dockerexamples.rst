@@ -571,7 +571,7 @@ Password: Passw0rd123!
 Raspberry Pi with MySQL (remote access) 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The following will provide a Panache Legal Platform environment running on a Raspberry Pi with a local MySQL database (Raspberry Pi has a local address of 192.168.86.247), the Docker containers will have there network ports exposed to on the host so you can access from another machine on the same network::
+The following will provide a Panache Legal Platform environment running on a Raspberry Pi with a local MySQL database (Raspberry Pi has a local address of 192.168.86.247), the Docker containers will have their network ports exposed to the host so you can access the platform from another machine on the same network::
 
     version: "3.4"
     services:
