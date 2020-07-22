@@ -40,4 +40,5 @@ Panache Legal is being built as a collabrative project designed to be supported 
    gettingstarted/0_docker
    gettingstarted/1_dockercompose
    gettingstarted/2_raspberrypi
-   gettingstarted/3_building
+   gettingstarted/3_dockerexamples
+   gettingstarted/4_building

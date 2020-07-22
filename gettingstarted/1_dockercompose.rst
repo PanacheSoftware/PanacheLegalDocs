@@ -24,9 +24,13 @@ Set's the environment that this container uses.  This should be set as **Develop
 
 The http ports to be spun up by the webserver.  This should be set as **http://+:80**
 
-``ConnectionStrings__DefaultConnection``
+``ConnectionStrings__MySQL``
 
-If the image requires a database use this to specify a connection string.  At present Panache Legal services only support SQL Server.
+If the image requires a database use this to specify a connection string to a MySQL database.
+
+``ConnectionStrings__MSSQL``
+
+If the image requires a database use this to specify a connection string to a MSSQL database.
 
 ``PanacheSoftware__CallMethod__APICallsSecure``
 
@@ -47,6 +51,10 @@ The underlying foundations of the Panache Legal Platform support running as `mul
 Username: admin@panachesoftware.com
 
 Password: Passw0rd123!
+
+``PanacheSoftware__DBProvider``
+
+Used to specify if the service should use Microsoft SQL server or MySQL for its database.  This should have a value of either **MSSQL** or **MySQL** and you should make sure the corresponding connection string is configured.
 
 ``PanacheSoftware__Url__IdentityServerURL`` and ``PanacheSoftware__Url__IdentityServerURLSecure``
 
@@ -108,10 +116,20 @@ The secret used to identify the Panache Legal Task service to Panache Legal Iden
 
 The secret used to identify the Panache Legal Team service to Panache Legal Identity.  Should be set as a unique GUID.
 
-SQL Server
-^^^^^^^^^^
+MySQL or MSSQL Docker
+^^^^^^^^^^^^^^^^^^^^^
 
-::
+MySQL::
+
+    sqldata:
+        image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=Passw0rd123!
+    volumes:
+      - panachesoftware-sqldata:/var/opt/mssql
+
+
+Microsoft SQL Server::
 
     sqldata:
         image: mcr.microsoft.com/mssql/server:2017-latest
@@ -129,19 +147,13 @@ SQL Server
         panachesoftware-sqldata:
             external: false
 
-This downloads and starts up a Linux based SQL Server container in docker.  The password for the **sa** user will be set to 'Passw0rd123!' and the EULA will be automatically accepted.
+This downloads and starts up a Linux based SQL Server container or a MySQL container in docker.  
 
-It is assumed that you will be running this SQL Server image using the free developer licence, but you should confirm that this licence applies to your organisation and use case or whether you require a seperate licence.
+For Microsoft SQL server the password for the **sa** user will be set to 'Passw0rd123!' and the EULA will be automatically accepted.  On MySQL the password for the **root** user will be set to 'Passw0rd123!'.
 
-.. note:: If you are using your own existing SQL server installation this section can be removed.
+For Microsoft SQL Server it is assumed that you will be running this SQL Server image using the free developer licence, but you should confirm that this licence applies to your organisation and use case or whether you require a seperate licence.
 
-If you are using this docker SQL Server instance then after it starts up you should be able to connect to it manually using the following details:
-
-Address: 127.0.0.1,5433
-
-Login: sa
-
-Password: Passw0rd123!
+.. note:: This is not required if you are connecting to an existing database installation.
 
 Panache Software Identity
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -155,11 +167,12 @@ Panache Software Identity
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Identity.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.Identity;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__UIClientURL=http://host.docker.internal:55001
             - PanacheSoftware__Url__UIClientURLSecure=https://host.docker.internal:44301
             - PanacheSoftware__Secret__UIClientSecret=49C1A7E1-0C79-4A89-A3D6-A37998FB86B0
@@ -172,7 +185,7 @@ Panache Software Identity
         ports:
             - "55002:80"
 
-The Identity Service requires a SQL Server database (which will be created on start-up) as well as the secrets to identify all of the other Panache Legal services, along with the address of the Panache Legal UI.
+The Identity Service requires a database (which will be created on start-up) as well as the secrets to identify all of the other Panache Legal services, along with the address of the Panache Legal UI.
 
 Panache Software Team Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -187,18 +200,19 @@ Panache Software Team Service
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Service.Team.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.Team;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__IdentityServerURL=http://host.docker.internal:55002
             - PanacheSoftware__Url__IdentityServerURLSecure=https://host.docker.internal:44302
             - PanacheSoftware__Secret__TeamServiceSecret=5C9BF545-3C20-4448-9EEC-6B3E745B671E
         ports:
             - "55006:80"
 
-The Team Service requires a SQL Server database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
+The Team Service requires a database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
 
 Panache Software Task Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -214,11 +228,12 @@ Panache Software Task Service
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Service.Task.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.Task;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__IdentityServerURL=http://host.docker.internal:55002
             - PanacheSoftware__Url__IdentityServerURLSecure=https://host.docker.internal:44302
             - PanacheSoftware__Url__TeamServiceURL=http://host.docker.internal:55006
@@ -227,7 +242,7 @@ Panache Software Task Service
         ports:
             - "55007:80"
 
-The Task Service requires a SQL Server database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.  This service also needs to call the Team service for data control.
+The Task Service requires a database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.  This service also needs to call the Team service for data control.
 
 Panache Software Foundation Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -242,18 +257,19 @@ Panache Software Foundation Service
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Service.Foundation.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.Foundation;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__IdentityServerURL=http://host.docker.internal:55002
             - PanacheSoftware__Url__IdentityServerURLSecure=https://host.docker.internal:44302
             - PanacheSoftware__Secret__FoundationServiceSecret=70CD8BB9-5256-42CF-8B95-DD61C1051AD0
         ports:
             - "55004:80"
 
-The Foundation Service requires a SQL Server database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
+The Foundation Service requires a database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
 
 Panache Software File Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -268,18 +284,19 @@ Panache Software File Service
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Service.File.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.File;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__IdentityServerURL=http://host.docker.internal:55002
             - PanacheSoftware__Url__IdentityServerURLSecure=https://host.docker.internal:44302
             - PanacheSoftware__Secret__FileServiceSecret=839C649E-4FE3-410C-B43F-69C017A52676
         ports:
             - "55008:80"
 
-The File Service requires a SQL Server database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
+The File Service requires a database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
 
 Panache Software Client Service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -294,18 +311,19 @@ Panache Software Client Service
         environment:
             - ASPNETCORE_ENVIRONMENT=Development
             - ASPNETCORE_URLS=http://+:80
-            - ConnectionStrings__DefaultConnection=Server=sqldata;Database=PanacheSoftware.Service.Client.Docker;User Id=sa;Password=Passw0rd123!
+            - ConnectionStrings__MySQL=server=sqldata;port=3306;database=PanacheSoftware.Client;user=root;password=Passw0rd123!;GuidFormat=Char36
             - PanacheSoftware__CallMethod__APICallsSecure=False
             - PanacheSoftware__CallMethod__UICallsSecure=False
             - PanacheSoftware__CallMethod__UseAPIGateway=False
             - PanacheSoftware__StartDomain=panachesoftware.com
+            - PanacheSoftware__DBProvider=MySQL
             - PanacheSoftware__Url__IdentityServerURL=http://host.docker.internal:55002
             - PanacheSoftware__Url__IdentityServerURLSecure=https://host.docker.internal:44302
             - PanacheSoftware__Secret__ClientServiceSecret=1314EF18-40FA-4B16-83DF-B276FF0D92A9
         ports:
             - "55005:80"
 
-The Client Service requires a SQL Server database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
+The Client Service requires a database (which will be created on start-up) as well as a secret that can be used to identify it and the location of the Panache Legal Identity service to allow it to perform authorisation against requests.
 
 Panache Software UI
 ^^^^^^^^^^^^^^^^^^^

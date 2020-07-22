@@ -17,12 +17,12 @@ This guide provides you with details to get you up and running with Panache Lega
 
             Panache Legal containers currently include a development build of the software and do not support features like HTTPS to prevent complications with certificates.
 
-            The current build of Panache Legal supports SQL Server.
+            The current build of Panache Legal supports Microsoft SQL Server and MySQL.
 
 TL;DR
 ^^^^^
 
-What follows is a step by step guide to running Panache Legal but the TL;DR is.
+What follows is a step by step guide to running Panache Legal using Docker on Windows but the TL;DR is.
 
 1. Install `Docker Desktop <https://www.docker.com/products/docker-desktop>`_
 
@@ -47,14 +47,16 @@ You can enable Hyper-V via Windows 'Apps and Features'.
 
 4. Select **Hyper-V** and click **OK**.
 
-Setup SQL Server
-^^^^^^^^^^^^^^^^
+Setup Database Server
+^^^^^^^^^^^^^^^^^^^^^
 
-The Panache Legal Platform requires a SQL Server database.  Depending on your situation you may have a local SQL server installation, an on premise server that you have access to, or a hosted SQL Server database provided through a service like Microsoft Azure.  Usage of SQL server requires a licence and so your use case will be specific to you and/or your organisation.
+The Panache Legal Platform requires either a Microsoft SQL Server or MySQL database.  Depending on your situation you may have a local database server installation, an on premise server that you have access to, or a hosted database server provided through a service like Microsoft Azure.  
 
-In this example we will use a SQL Server `docker container <https://hub.docker.com/_/microsoft-mssql-server>`_ with the free developer licence.  This developer licence includes some limitations on how it can be deployed and you should make sure to read the licence details on the docker hub page, as well as checking which `edition <https://www.microsoft.com/en-us/sql-server/sql-server-2017-editions>`_ will be suitable for your use case.
+Usage of Microsoft SQL Server requires a licence and so your use case will be specific to you and/or your organisation.
 
-If you are not using the docker container version of SQL Server as per this guide you will need to ensure you have a valid connection string to access your SQL server database.
+In this example we will use a MySQL Linux `docker container <https://hub.docker.com/_/mysql>`_.  You could alternatively use a `Microsoft SQL Server <https://hub.docker.com/_/microsoft-mssql-server>`_ Linux container with the free developer, although this licence includes some limitations on how it can be deployed and you should make sure to read the licence details on the docker hub page, as well as checking which `edition <https://www.microsoft.com/en-us/sql-server/sql-server-2017-editions>`_ will be suitable for your use case.
+
+If you are not using the docker container version of MySQL or Microsoft SQL Server as per this guide and instead will connect to your own database installation you will need to ensure you have a valid connection string to access your database.
 
 Download Docker compose file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -79,7 +81,7 @@ This will download all the containers from the Docker Hub and start them up.
 
 .. note:: Time to download and start all containers will depend on your internet connection and the performance of your computer.  
 
-This docker compose file will download and start a Linux based SQL Server container to store the Panache Legal Platform databases, because several of the containers require this to be in place before they can run correctly if you open the docker dashboard (via the docker desktop application) after running the command above you may see containers that fail to start.
+This docker compose file will download and start a Linux based MySQL container to store the Panache Legal Platform databases, because several of the containers require this to be in place before they can run correctly if you open the docker dashboard (via the docker desktop application) after running the command above you may see containers that fail to start.
 
 .. image:: /img/docker-dashboard-fail.png
    :align: center

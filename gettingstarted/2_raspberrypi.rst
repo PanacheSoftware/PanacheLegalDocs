@@ -10,13 +10,6 @@ Although it is unlikely that you would run a production environment on a `Raspbe
 
 If you want to run Panache Legal on a Raspberry Pi you can grab a copy of the code and build it yourself, but a far simpler method is to run the same way you can on Windows and use our pre-built docker images that you can find on our `Docker Hub <https://hub.docker.com/u/panachesoftware>`_ area, look for the versions ending with '-arm32'.
 
-SQL Server
-^^^^^^^^^^
-
-At present Panache Legal only supports SQL Server for its database which doesn't run natively on a Raspberry Pi.  
-
-One of our development milestones is to add support for MYSQL but until then when running Panache Legal on a Raspberry Pi you will need to connect to a SQL Server database hosted externally.  This could be on another local Windows machine but if that isn't available why not sign up to `Microsoft Azure <https://azure.microsoft.com/>`_ for free and use your 30 days of credits to run a Linux based developer version of SQL Server by following this guide: `SQL Server on Linux <https://docs.microsoft.com/en-us/azure/azure-sql/virtual-machines/linux/sql-server-on-linux-vm-what-is-iaas-overview>`_.
-
 0 to LegalTech in 3 minutes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -26,7 +19,7 @@ With a SQL Server database configured and Docker installed on your Raspberry Pi 
 
             Panache Legal containers currently include a development build of the software and do not support features like HTTPS to prevent complications with certificates.
 
-            The current build of Panache Legal supports SQL Server.
+            The current build of Panache Legal supports Microsoft SQL Server and MySQL.
 
 TL;DR
 ^^^^^
@@ -35,7 +28,7 @@ What follows is a step by step guide to running Panache Legal on a Raspberry Pi 
 
 1. Install Docker and Docker compose
 
-2. Setup a SQL Server environment
+2. Setup a MySQL database
 
 3. Download the example `docker-compose.yml <https://github.com/PanacheSoftware/PanacheLegalPlatform/blob/main/support%20files/docker/raspberrypi/docker-compose.yml>`_ file
 
@@ -58,14 +51,16 @@ Firstly you need to setup your Raspberry Pi, this example has been tested with a
 
 5. Install Docker and Docker Compose.  There are lots of guides for this, here's one to get you going: `Guide <https://dev.to/rohansawant/installing-docker-and-docker-compose-on-the-raspberry-pi-in-5-simple-steps-3mgl>`_ 
 
-Setup SQL Server
-^^^^^^^^^^^^^^^^
+Setup MySQL
+^^^^^^^^^^^
 
-If you don't have a local installation, or a SQL Server instance provided by your organisation, you can stand up a free developer version for testing on Microsoft Azure.
+In this example we will use MySQL installed locally on the Raspberry Pi.  The easiest way to set this up is to use the following guides:
 
-1. Sign up for a free 30 day `Microsoft Azure <Microsoft Azure_>`_ account and claim your £150 worth of credits
+1. Install MySQL on your Raspberry Pi using MariaDB: `MySQL Install <https://pimylifeup.com/raspberry-pi-mysql/>`_
 
-2. Follow a guide to get `SQL Server on Linux <SQL Server on Linux_>`_ up and running in a virtual machine and make a note of the IP address, you'll need that below
+2. Although not required you should install phpMyAdmin to make Database administration easy: `phpMyAdmin Install <https://pimylifeup.com/raspberry-pi-phpmyadmin/>`_
+
+Make sure to note down the MySQL username and password you setup.
 
 Download Docker compose file
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -78,11 +73,19 @@ GitHub: `docker-compose.yml <docker-compose.yml_>`_
 
 1. Place downloaded **docker-compose.yml** file into a folder of your choosing.
 
-2. Edit the **docker-compose.yml** file changing the following value to the IP address and port of your SQL Server::
+2. Edit the **docker-compose.yml** file changing the following value to the IP address of your MySQL installation (or 127.0.0.1 if installed locally)::
 
-    {IP address and port for example 12.345.678.90,1433}
+    {ip address of MySQL server}
 
-3. In the shell, navigate to the folder where you downloaded the **docker-compose.yml** file and run the following command::
+3. Edit the **docker-compose.yml** file changing the following to 172.17.0.1, or the IP address of your Raspberry Pi if running remotely::
+
+    {ip address of host or 172.17.0.1 if only accessing locally}
+
+4. Edit the **docker-compose.yml** to delete the below, or set it to the the IP address of your Raspberry Pi if running remotely::
+
+    {delete this if running locally, otherwise ip address of host i.e. 123.456.78.900:}
+
+5. In the shell, navigate to the folder where you downloaded the **docker-compose.yml** file and run the following command::
 
     docker-compose up -d
 
