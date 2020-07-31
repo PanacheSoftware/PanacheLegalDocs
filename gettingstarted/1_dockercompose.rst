@@ -7,8 +7,6 @@ GitHub: `docker-compose.yml <https://github.com/PanacheSoftware/PanacheLegalPlat
 
 This file has been configured to download and start up everything you need to run the Panache Legal Platform and its currently available services.
 
-This example also includes a SQL Server `docker container <https://hub.docker.com/_/microsoft-mssql-server>`_ using the free developer licence.  This developer licence includes some limitations on how it can be deployed and you should make sure to read the licence details on the docker hub page, as well as checking which `edition <https://www.microsoft.com/en-us/sql-server/sql-server-2017-editions>`_ will be suitable for your use case.
-
 Environment Variables
 ^^^^^^^^^^^^^^^^^^^^^
 
