@@ -4,7 +4,7 @@ Running Panache Legal on a Raspberry Pi
 .. image:: /img/raspi-logo.png
    :align: center
 
-One of the core design considerations for the Panache Legal Platform is to build a LegalTech solution that can be used by an individual lawyer, right through to an enterprise, on any environment they may want to use.  Panache Legal is built using `Microsoft .NET Core <https://dotnet.microsoft.com/>`_ which provides cross platform functionality allowing Panache Legal to run on Windows, Mac and Linux (including ARM based variants).  
+One of the core design considerations for the Panache Legal Platform is to build a LegalTech solution that can be used by an individual lawyer, right through to an enterprise, on any environment they may want to use.  Panache Legal is built using `Microsoft .NET 5 <https://dotnet.microsoft.com/>`_ which provides cross platform functionality allowing Panache Legal to run on Windows, Mac and Linux (including ARM based variants).  
 
 Although it is unlikely that you would run a production environment on a `Raspberry Pi <https://www.raspberrypi.org/>`_ it is possible to get Panache Legal running on one which means that if you had no available system to test on, you could get up and running with the complete platform for just the cost of a single Raspberry Pi, around £55.
 
@@ -73,17 +73,18 @@ GitHub: `docker-compose.yml <docker-compose.yml_>`_
 
 1. Place downloaded **docker-compose.yml** file into a folder of your choosing.
 
-2. Edit the **docker-compose.yml** file changing the following value to the IP address of your MySQL installation (or 127.0.0.1 if installed locally)::
+2. Edit the **docker-compose.yml** file changing the hostname as required, in this example the host name is assumed to be::
 
-    {ip address of MySQL server}
+    raspberrypi
 
-3. Edit the **docker-compose.yml** file changing the following to 172.17.0.1, or the IP address of your Raspberry Pi if running remotely::
+3. Edit the **docker-compose.yml** file changing the MySQL logon details, in this example these are assumed to be::
 
-    {ip address of host or 172.17.0.1 if only accessing locally}
+    Server=raspberrypi
+    user=pluser
+    password=Passw0rd123!
 
-4. Edit the **docker-compose.yml** to delete the below, or set it to the the IP address of your Raspberry Pi if running remotely::
 
-    {delete this if running locally, otherwise ip address of host i.e. 123.456.78.900:}
+4. **Recommended** Edit the **docker-compose.yml** to changing GUIDs used for secrets to something specific to your install
 
 5. In the shell, navigate to the folder where you downloaded the **docker-compose.yml** file and run the following command::
 
@@ -93,7 +94,7 @@ This will download all the containers from the Docker Hub and start them up.
 
 .. note:: Time to download and start all containers will depend on your internet connection and the performance of your computer.
 
-Once all containers are running open a web browser and navigate to **http://172.17.0.1:55001** to open the Panache Legal Platform.  You can use the following details to login (assuming you did not change the **PanacheSoftware__StartDomain** environment variable to a different domain).
+Once all containers are running open a web browser and navigate to **http://raspberrypi:55001** to open the Panache Legal Platform.  You can use the following details to login (assuming you did not change the **PanacheSoftware__StartDomain** environment variable to a different domain).
 
 Username: admin@panachesoftware.com
 
